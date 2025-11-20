@@ -1,5 +1,5 @@
 target/
-!.mvn/wrapper/maven-wrapper.jar
+!microservicios/auth/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -36,3 +36,46 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Python (Django)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+*.sqlite3
+db.sqlite3
+
+# Node (NestJS)
+node_modules/
+dist/
+*.log
+npm-debug.log*
+
+# Java (Spring Boot)
+target/
+*.class
+*.jar
+*.war
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# Docker
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kubernetes secrets
+kubernetes/secrets/
+*.key
+*.crt
