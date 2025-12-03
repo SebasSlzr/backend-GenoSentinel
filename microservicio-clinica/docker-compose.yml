@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: genosentinel-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password123
+      MYSQL_DATABASE: genosentinel_clinica
+    ports:
+      - "3307:3306"  # Cambié a 3307 para evitar conflicto con MySQL local
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - genosentinel-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  clinica-service:
+    build: .
+    container_name: genosentinel-clinica
+    ports:
+      - "3001:3001"
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=password123
+      - DB_DATABASE=genosentinel_clinica
+      - DB_SYNCHRONIZE=true
+      - PORT=3001
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - genosentinel-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  genosentinel-network:
+    driver: bridge
