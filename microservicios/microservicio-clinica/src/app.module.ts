@@ -24,7 +24,7 @@ import { AuthModule } from './auth/auth.module';
         port: configService.get('DB_PORT', 3306),
         username: configService.get('DB_USERNAME', 'root'),
         password: configService.get('DB_PASSWORD', ''),
-        database: configService.get('DB_DATABASE', 'genosentinel_clinica'),
+        database: configService.get('DB_DATABASE', 'genosentinel'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: configService.get('DB_SYNCHRONIZE', 'true') === 'true',
         logging: configService.get('DB_LOGGING', 'false') === 'true',

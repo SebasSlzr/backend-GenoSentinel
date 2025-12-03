@@ -11,7 +11,7 @@ export class TumorType {
   })
   id: number;
 
-  @Column({ type: 'varchar', length: 200, unique: true })
+  @Column({ type: 'varchar', length: 200/*, unique: true */})
   @ApiProperty({
     example: 'Cáncer de Mama',
     description: 'Nombre del tipo de tumor',

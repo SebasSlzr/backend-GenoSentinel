@@ -6,7 +6,16 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
+
+    // DEBUG: Ver qué variables de entorno está leyendo
+    console.log('🔍 DEBUG - Variables de entorno:');
+    console.log('DB_HOST:', process.env.DB_HOST);
+    console.log('DB_PORT:', process.env.DB_PORT);
+    console.log('DB_DATABASE:', process.env.DB_DATABASE);
+    console.log('DB_USERNAME:', process.env.DB_USERNAME);
+    console.log('---');
+
   // Configuración global de validación
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
@@ -18,11 +27,15 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   
   // Configuración de CORS
-  app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:4200',
-    methods: 'GET,POST,PUT,DELETE,PATCH',
-    credentials: true,
-  });
+    app.enableCors({
+        origin: [
+            process.env.FRONTEND_URL || 'http://localhost:4200',
+            process.env.GATEWAY_URL || 'http://localhost:8081',
+            'http://localhost:8000', // Django
+        ],
+        methods: 'GET,POST,PUT,DELETE,PATCH',
+        credentials: true,
+    });
   
   // Configuración de Swagger
   const config = new DocumentBuilder()
