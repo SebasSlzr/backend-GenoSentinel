@@ -1,23 +1,19 @@
-FROM python:3.13-slim
+FROM python:3.11-slim
 
-# Variables de entorno para Python
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
-
-# Directorio de trabajo
 WORKDIR /app
 
 # Copiar requirements
 COPY requirements.txt .
 
-# Instalar dependencias
-RUN pip install --no-cache-dir -r requirements.txt
+# Configurar pip con timeout mayor y retry
+RUN pip install --default-timeout=100 --retries 5 --no-cache-dir -r requirements.txt
 
-# Copiar código fuente
+# Copiar código
 COPY . .
 
-# Exponer puerto
+# Recopilar archivos estáticos (opcional)
+RUN python manage.py collectstatic --noinput || true
+
 EXPOSE 8000
 
-# Comando para ejecutar
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

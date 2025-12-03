@@ -2,6 +2,7 @@ package com.genosentinel.auth.controller;
 
 import com.genosentinel.auth.service.AuthService;
 import com.genosentinel.auth.service.GatewayService;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/gateway")
+@Hidden
 @CrossOrigin(origins = "*")
 public class GatewayController {
 
@@ -57,6 +59,8 @@ public class GatewayController {
         }
 
         String path = extractPath(request.getRequestURI(), "/gateway/clinica");
+        System.out.println("DEBUG - Request URI: " + request.getRequestURI());
+        System.out.println("DEBUG - Extracted path: " + path);
         HttpHeaders headers = extractHeaders(request);
         HttpMethod method = HttpMethod.valueOf(request.getMethod());
 
@@ -69,12 +73,24 @@ public class GatewayController {
     }
 
     private boolean validateToken(String authHeader) {
+        // DEBUG: Ver qué recibe
+        System.out.println("========== DEBUG GATEWAY ==========");
+        System.out.println("Authorization Header: " + authHeader);
+        System.out.println("===================================");
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println("ERROR: Header inválido o missing");
             return false;
         }
 
         String token = authHeader.substring(7);
-        return authService.validateToken(token);
+        System.out.println("Token extraído: " + token);
+
+        boolean isValid = authService.validateToken(token);
+        System.out.println("Token válido: " + isValid);
+        System.out.println("===================================");
+
+        return isValid;
     }
 
     private String extractPath(String requestURI, String prefix) {
