@@ -1,6 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PatientsModule } from './patients/patients.module';
+import { TumorTypesModule } from './tumor-types/tumor-types.module';
+import { ClinicalRecordsModule } from './clinical-records/clinical-records.module';
+import { Patient } from './patients/entities/patient.entity';
+import { TumorType } from './tumor-types/entities/tumor-type.entity';
+import { ClinicalRecord } from './clinical-records/entities/clinical-record.entity';
 
 @Module({
     imports: [
@@ -15,10 +21,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
             username: process.env.MYSQL_USER,
             password: process.env.MYSQL_PASSWORD,
             database: process.env.MYSQL_DB,
-            entities: [],
+            entities: [Patient, TumorType, ClinicalRecord],
             synchronize: true,
             logging: true,
         }),
+        PatientsModule,
+        TumorTypesModule,
+        ClinicalRecordsModule,
     ],
     controllers: [],
     providers: [],
